@@ -102,6 +102,7 @@ echo ""
 mkdir /etc/kibana/certs
 cp ~/certs/root-ca.pem /etc/kibana/certs/
 mv ~/certs/kibana* /etc/kibana/certs/
+chown kibana:kibana /etc/kibana/certs/*
 setcap 'cap_net_bind_service=+ep' /usr/share/kibana/node/bin/node
 
 echo ""
