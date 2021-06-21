@@ -55,13 +55,17 @@ mv ~/certs/elasticsearch* /etc/elasticsearch/certs/
 mv ~/certs/admin* /etc/elasticsearch/certs/
 cp ~/certs/root-ca* /etc/elasticsearch/certs/
 
-# Redmarrage ElasticSearch 
+# Redémarrage ElasticSearch 
+echo "Redémarrage ElasticSearch & persistance"
+sleep 2
 systemctl daemon-reload
 systemctl enable elasticsearch
 systemctl start elasticsearch
 echo ""
 
 # Charger les nouveaux certificats d'ElasticSearch
+echo "Charger les nouveaux certificats d'ElasticSearch"
+sleep 2
 /usr/share/elasticsearch/plugins/opendistro_security/tools/securityadmin.sh -cd /usr/share/elasticsearch/plugins/opendistro_security/securityconfig/ -nhnv -cacert /etc/elasticsearch/certs/root-ca.pem -cert /etc/elasticsearch/certs/admin.pem -key /etc/elasticsearch/certs/admin-key.pem
 curl -XGET https://localhost:9200 -u admin:admin -k
 echo ""
@@ -77,12 +81,16 @@ curl -s https://packages.wazuh.com/4.x/filebeat/wazuh-filebeat-0.1.tar.gz | tar 
 echo ""
 
 # Installation des certificats FileBeat
+echo "Installation des certificats FileBeat"
+sleep 2
 mkdir /etc/filebeat/certs
 cp ~/certs/root-ca.pem /etc/filebeat/certs/
 mv ~/certs/filebeat* /etc/filebeat/certs/
 echo ""
 
 # Redémarrage de FileBeat
+echo "Redémarrage de FileBeat & persistance"
+sleep 2
 systemctl daemon-reload
 systemctl enable filebeat
 systemctl start filebeat
@@ -90,6 +98,8 @@ filebeat test output
 echo ""
 
 # Installation de Kibana
+echo "Installation de Kibana"
+sleep 2
 apt-get install opendistroforelasticsearch-kibana
 curl -so /etc/kibana/kibana.yml https://raw.githubusercontent.com/wazuh/wazuh-documentation/4.1/resources/open-distro/kibana/7.x/kibana_all_in_one.yml
 mkdir /usr/share/kibana/data
@@ -99,6 +109,8 @@ sudo -u kibana /usr/share/kibana/bin/kibana-plugin install https://packages.wazu
 echo ""
 
 # Installation des certificats Kibana
+echo "Installation des certificats Kibana"
+sleep 2
 mkdir /etc/kibana/certs
 cp ~/certs/root-ca.pem /etc/kibana/certs/
 mv ~/certs/kibana* /etc/kibana/certs/
@@ -107,6 +119,8 @@ setcap 'cap_net_bind_service=+ep' /usr/share/kibana/node/bin/node
 
 echo ""
 # Redémarrage de Kibana
+echo "Redémarrage de Kibana & persistance"
+sleep 2
 systemctl daemon-reload
 systemctl enable kibana
 systemctl start kibana
